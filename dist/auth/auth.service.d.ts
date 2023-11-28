@@ -22,20 +22,27 @@
 /// <reference types="mongoose/types/validation" />
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose/types/inferschematype" />
-import { Model } from "mongoose";
-import { User } from "./entities/user.entity";
-import { JwtService } from "@nestjs/jwt";
-import { JwtPayload } from "./interfaces/jwt-payload";
-import { LoginResponse } from "./interfaces/login-response";
+import { JwtService } from '@nestjs/jwt';
+import { Model } from 'mongoose';
+import { User } from './entities/user.entity';
+import { JwtPayload } from './interfaces/jwt-payload';
+import { LoginResponse } from './interfaces/login-response';
 import { CreateUserDto, LoginDto, RegisterDto, UpdateAuthDto } from './dto';
 export declare class AuthService {
     private userModel;
-    private jwService;
-    constructor(userModel: Model<User>, jwService: JwtService);
+    private jwtService;
+    constructor(userModel: Model<User>, jwtService: JwtService);
     create(createUserDto: CreateUserDto): Promise<User>;
     register(registerDto: RegisterDto): Promise<LoginResponse>;
     login(loginDto: LoginDto): Promise<LoginResponse>;
     findAll(): Promise<User[]>;
+    findUserById(id: string): Promise<{
+        _id: string;
+        email: string;
+        name: string;
+        isActive: boolean;
+        roles: string[];
+    }>;
     findOne(id: number): string;
     update(id: number, updateAuthDto: UpdateAuthDto): string;
     remove(id: number): string;

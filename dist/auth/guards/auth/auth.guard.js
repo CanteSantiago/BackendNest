@@ -18,11 +18,25 @@ let AuthGuard = class AuthGuard {
         this.jwtService = jwtService;
         this.authService = authService;
     }
-    canActivate(context) {
+    async canActivate(context) {
         const request = context.switchToHttp().getRequest();
         const token = this.extractTokenFromHeader(request);
-        console.log({ token });
-        return Promise.resolve(true);
+        if (!token) {
+            throw new common_1.UnauthorizedException('There is no bearer token');
+        }
+        try {
+            const payload = await this.jwtService.verifyAsync(token, { secret: process.env.JWT_SEED });
+            const user = await this.authService.findUserById(payload.id);
+            if (!user)
+                throw new common_1.UnauthorizedException('User does not exists');
+            if (!user.isActive)
+                throw new common_1.UnauthorizedException('User is not active');
+            request['user'] = user;
+        }
+        catch (error) {
+            throw new common_1.UnauthorizedException();
+        }
+        return true;
     }
     extractTokenFromHeader(request) {
         const [type, token] = request.headers['authorization']?.split(' ') ?? [];

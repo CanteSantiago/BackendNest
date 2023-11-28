@@ -14,15 +14,15 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
-const mongoose_1 = require("mongoose");
-const user_entity_1 = require("./entities/user.entity");
-const mongoose_2 = require("@nestjs/mongoose");
-const bcryptjs = require("bcryptjs");
+const mongoose_1 = require("@nestjs/mongoose");
 const jwt_1 = require("@nestjs/jwt");
+const mongoose_2 = require("mongoose");
+const bcryptjs = require("bcryptjs");
+const user_entity_1 = require("./entities/user.entity");
 let AuthService = class AuthService {
-    constructor(userModel, jwService) {
+    constructor(userModel, jwtService) {
         this.userModel = userModel;
-        this.jwService = jwService;
+        this.jwtService = jwtService;
     }
     async create(createUserDto) {
         try {
@@ -37,9 +37,9 @@ let AuthService = class AuthService {
         }
         catch (error) {
             if (error.code === 11000) {
-                throw new common_1.BadRequestException(`${createUserDto.email} already exist!`);
+                throw new common_1.BadRequestException(`${createUserDto.email} already exists!`);
             }
-            throw new common_1.InternalServerErrorException('Something terrible happen!!!');
+            throw new common_1.InternalServerErrorException('Something terribe happen!!!');
         }
     }
     async register(registerDto) {
@@ -67,6 +67,11 @@ let AuthService = class AuthService {
     findAll() {
         return this.userModel.find();
     }
+    async findUserById(id) {
+        const user = await this.userModel.findById(id);
+        const { password, ...rest } = user.toJSON();
+        return rest;
+    }
     findOne(id) {
         return `This action returns a #${id} auth`;
     }
@@ -77,15 +82,15 @@ let AuthService = class AuthService {
         return `This action removes a #${id} auth`;
     }
     getJwtToken(payload) {
-        const token = this.jwService.sign(payload);
+        const token = this.jwtService.sign(payload);
         return token;
     }
 };
 exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, mongoose_2.InjectModel)(user_entity_1.User.name)),
-    __metadata("design:paramtypes", [mongoose_1.Model,
+    __param(0, (0, mongoose_1.InjectModel)(user_entity_1.User.name)),
+    __metadata("design:paramtypes", [mongoose_2.Model,
         jwt_1.JwtService])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map

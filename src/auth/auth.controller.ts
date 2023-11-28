@@ -2,8 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request }
 import { AuthService } from './auth.service';
 import { CreateUserDto, LoginDto, RegisterDto, UpdateAuthDto, } from './dto';
 import { AuthGuard } from './guards/auth/auth.guard';
-
-
+ 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -26,8 +25,9 @@ export class AuthController {
 
   @UseGuards( AuthGuard )
    @Get()
-  findAll() {
-    return this.authService.findAll();
+   findAll( @Request() req: Request ) {
+const user = req['user'];
+return user;
   }
 
   @Get(':id')

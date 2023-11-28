@@ -31,8 +31,9 @@ let AuthController = class AuthController {
     register(registerDto) {
         return this.authService.register(registerDto);
     }
-    findAll() {
-        return this.authService.findAll();
+    findAll(req) {
+        const user = req['user'];
+        return user;
     }
     findOne(id) {
         return this.authService.findOne(+id);
@@ -69,8 +70,9 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
     (0, common_1.Get)(),
+    __param(0, (0, common_1.Request)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "findAll", null);
 __decorate([
