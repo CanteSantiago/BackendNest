@@ -65,7 +65,7 @@ let AuthService = class AuthService {
         };
     }
     findAll() {
-        return `This action returns all auth`;
+        return this.userModel.find();
     }
     findOne(id) {
         return `This action returns a #${id} auth`;

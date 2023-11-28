@@ -6,7 +6,7 @@ export declare class AuthController {
     create(createUserDto: CreateUserDto): Promise<import("./entities/user.entity").User>;
     login(loginDto: LoginDto): Promise<import("./interfaces/login-response").LoginResponse>;
     register(registerDto: RegisterDto): Promise<import("./interfaces/login-response").LoginResponse>;
-    findAll(): string;
+    findAll(): Promise<import("./entities/user.entity").User[]>;
     findOne(id: string): string;
     update(id: string, updateAuthDto: UpdateAuthDto): string;
     remove(id: string): string;

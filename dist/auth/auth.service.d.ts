@@ -35,7 +35,7 @@ export declare class AuthService {
     create(createUserDto: CreateUserDto): Promise<User>;
     register(registerDto: RegisterDto): Promise<LoginResponse>;
     login(loginDto: LoginDto): Promise<LoginResponse>;
-    findAll(): string;
+    findAll(): Promise<User[]>;
     findOne(id: number): string;
     update(id: number, updateAuthDto: UpdateAuthDto): string;
     remove(id: number): string;
