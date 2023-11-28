@@ -40,6 +40,21 @@ let AuthService = class AuthService {
             throw new common_1.InternalServerErrorException('Something terrible happen!!!');
         }
     }
+    async login(loginDto) {
+        const { email, password } = loginDto;
+        const user = await this.userModel.findOne({ email });
+        if (!user) {
+            throw new common_1.UnauthorizedException('Not valid credentials - email');
+        }
+        if (!bcryptjs.compareSync(password, user.password)) {
+            throw new common_1.UnauthorizedException('Not valid credentials - password');
+        }
+        const { password: _, ...rest } = user.toJSON();
+        return {
+            ...rest,
+            token: 'ABC-123'
+        };
+    }
     findAll() {
         return `This action returns all auth`;
     }

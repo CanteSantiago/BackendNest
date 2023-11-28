@@ -26,10 +26,19 @@ import { Model } from "mongoose";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateAuthDto } from "./dto/update-auth.dto";
 import { User } from "./entities/user.entity";
+import { LoginDto } from "./dto/login.dto";
 export declare class AuthService {
     private userModel;
     constructor(userModel: Model<User>);
     create(createUserDto: CreateUserDto): Promise<User>;
+    login(loginDto: LoginDto): Promise<{
+        token: string;
+        email: string;
+        name: string;
+        isActive: boolean;
+        roles: string[];
+        _id: import("mongoose").Types.ObjectId;
+    }>;
     findAll(): string;
     findOne(id: number): string;
     update(id: number, updateAuthDto: UpdateAuthDto): string;
