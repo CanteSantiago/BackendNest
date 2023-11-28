@@ -35,14 +35,12 @@ let AuthController = class AuthController {
         const user = req['user'];
         return user;
     }
-    findOne(id) {
-        return this.authService.findOne(+id);
-    }
-    update(id, updateAuthDto) {
-        return this.authService.update(+id, updateAuthDto);
-    }
-    remove(id) {
-        return this.authService.remove(+id);
+    checkToken(req) {
+        const user = req['user'];
+        return {
+            user,
+            token: this.authService.getJwtToken({ id: user._id })
+        };
     }
 };
 exports.AuthController = AuthController;
@@ -76,27 +74,13 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "findAll", null);
 __decorate([
-    (0, common_1.Get)(':id'),
-    __param(0, (0, common_1.Param)('id')),
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
+    (0, common_1.Get)('check-token'),
+    __param(0, (0, common_1.Request)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
-], AuthController.prototype, "findOne", null);
-__decorate([
-    (0, common_1.Patch)(':id'),
-    __param(0, (0, common_1.Param)('id')),
-    __param(1, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, dto_1.UpdateAuthDto]),
-    __metadata("design:returntype", void 0)
-], AuthController.prototype, "update", null);
-__decorate([
-    (0, common_1.Delete)(':id'),
-    __param(0, (0, common_1.Param)('id')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
-], AuthController.prototype, "remove", null);
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Object)
+], AuthController.prototype, "checkToken", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])
