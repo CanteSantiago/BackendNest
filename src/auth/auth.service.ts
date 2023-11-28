@@ -8,6 +8,7 @@ import * as bcryptjs from 'bcryptjs';
 import { LoginDto } from "./dto/login.dto";
 import { JwtService } from "@nestjs/jwt";
 import { JwtPayload } from "./interfaces/jwt-payload";
+import { LoginResponse } from "./interfaces/login-response";
 
  
 @Injectable()
@@ -43,7 +44,7 @@ return user;
 
 }
 
-async login( loginDto: LoginDto )  {
+async login( loginDto: LoginDto ): Promise <LoginResponse> {
 
   const { email, password } = loginDto;
 
