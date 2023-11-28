@@ -15,9 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
 const common_1 = require("@nestjs/common");
 const auth_service_1 = require("./auth.service");
-const create_user_dto_1 = require("./dto/create-user.dto");
-const update_auth_dto_1 = require("./dto/update-auth.dto");
-const login_dto_1 = require("./dto/login.dto");
+const dto_1 = require("./dto");
 let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
@@ -28,6 +26,9 @@ let AuthController = class AuthController {
     }
     login(loginDto) {
         return this.authService.login(loginDto);
+    }
+    register(registerDto) {
+        return this.authService.register(registerDto);
     }
     findAll() {
         return this.authService.findAll();
@@ -47,16 +48,23 @@ __decorate([
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_user_dto_1.CreateUserDto]),
+    __metadata("design:paramtypes", [dto_1.CreateUserDto]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "create", null);
 __decorate([
     (0, common_1.Post)('/login'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [login_dto_1.LoginDto]),
+    __metadata("design:paramtypes", [dto_1.LoginDto]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "login", null);
+__decorate([
+    (0, common_1.Post)('/register'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [dto_1.RegisterDto]),
+    __metadata("design:returntype", void 0)
+], AuthController.prototype, "register", null);
 __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),
@@ -75,7 +83,7 @@ __decorate([
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_auth_dto_1.UpdateAuthDto]),
+    __metadata("design:paramtypes", [String, dto_1.UpdateAuthDto]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "update", null);
 __decorate([

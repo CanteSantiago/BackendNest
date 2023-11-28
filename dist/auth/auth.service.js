@@ -42,6 +42,13 @@ let AuthService = class AuthService {
             throw new common_1.InternalServerErrorException('Something terrible happen!!!');
         }
     }
+    async register(registerDto) {
+        const user = await this.create(registerDto);
+        return {
+            user: user,
+            token: this.getJwtToken({ id: user._id })
+        };
+    }
     async login(loginDto) {
         const { email, password } = loginDto;
         const user = await this.userModel.findOne({ email });

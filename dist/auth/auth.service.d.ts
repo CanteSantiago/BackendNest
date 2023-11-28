@@ -23,18 +23,17 @@
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose/types/inferschematype" />
 import { Model } from "mongoose";
-import { CreateUserDto } from "./dto/create-user.dto";
-import { UpdateAuthDto } from "./dto/update-auth.dto";
 import { User } from "./entities/user.entity";
-import { LoginDto } from "./dto/login.dto";
 import { JwtService } from "@nestjs/jwt";
 import { JwtPayload } from "./interfaces/jwt-payload";
 import { LoginResponse } from "./interfaces/login-response";
+import { CreateUserDto, LoginDto, RegisterDto, UpdateAuthDto } from './dto';
 export declare class AuthService {
     private userModel;
     private jwService;
     constructor(userModel: Model<User>, jwService: JwtService);
     create(createUserDto: CreateUserDto): Promise<User>;
+    register(registerDto: RegisterDto): Promise<LoginResponse>;
     login(loginDto: LoginDto): Promise<LoginResponse>;
     findAll(): string;
     findOne(id: number): string;
