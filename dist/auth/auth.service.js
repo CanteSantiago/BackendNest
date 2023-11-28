@@ -27,9 +27,11 @@ let AuthService = class AuthService {
             return newUser.save();
         }
         catch (error) {
-            console.log(error.code);
+            if (error.code === 11000) {
+                throw new common_1.BadRequestException(`${createUserDto.email} already exist!`);
+            }
+            throw new common_1.InternalServerErrorException('Something terrible happen!!!');
         }
-        console.log(createUserDto);
     }
     findAll() {
         return `This action returns all auth`;
