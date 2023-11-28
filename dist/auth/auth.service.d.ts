@@ -27,20 +27,26 @@ import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateAuthDto } from "./dto/update-auth.dto";
 import { User } from "./entities/user.entity";
 import { LoginDto } from "./dto/login.dto";
+import { JwtService } from "@nestjs/jwt";
+import { JwtPayload } from "./interfaces/jwt-payload";
 export declare class AuthService {
     private userModel;
-    constructor(userModel: Model<User>);
+    private jwService;
+    constructor(userModel: Model<User>, jwService: JwtService);
     create(createUserDto: CreateUserDto): Promise<User>;
     login(loginDto: LoginDto): Promise<{
+        user: {
+            email: string;
+            name: string;
+            isActive: boolean;
+            roles: string[];
+            _id: import("mongoose").Types.ObjectId;
+        };
         token: string;
-        email: string;
-        name: string;
-        isActive: boolean;
-        roles: string[];
-        _id: import("mongoose").Types.ObjectId;
     }>;
     findAll(): string;
     findOne(id: number): string;
     update(id: number, updateAuthDto: UpdateAuthDto): string;
     remove(id: number): string;
+    getJwtToken(payload: JwtPayload): string;
 }

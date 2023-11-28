@@ -12,6 +12,8 @@ const mongoose_1 = require("@nestjs/mongoose");
 const auth_service_1 = require("./auth.service");
 const auth_controller_1 = require("./auth.controller");
 const user_entity_1 = require("./entities/user.entity");
+const jwt_1 = require("@nestjs/jwt");
+const config_1 = require("@nestjs/config");
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
@@ -20,12 +22,18 @@ exports.AuthModule = AuthModule = __decorate([
         controllers: [auth_controller_1.AuthController],
         providers: [auth_service_1.AuthService],
         imports: [
+            config_1.ConfigModule.forRoot(),
             mongoose_1.MongooseModule.forFeature([
                 {
                     name: user_entity_1.User.name,
                     schema: user_entity_1.UserSchema
                 }
             ]),
+            jwt_1.JwtModule.register({
+                global: true,
+                secret: process.env.JWT_SEED,
+                signOptions: { expiresIn: '6h' },
+            }),
         ]
     })
 ], AuthModule);

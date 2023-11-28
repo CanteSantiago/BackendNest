@@ -18,9 +18,11 @@ const mongoose_1 = require("mongoose");
 const user_entity_1 = require("./entities/user.entity");
 const mongoose_2 = require("@nestjs/mongoose");
 const bcryptjs = require("bcryptjs");
+const jwt_1 = require("@nestjs/jwt");
 let AuthService = class AuthService {
-    constructor(userModel) {
+    constructor(userModel, jwService) {
         this.userModel = userModel;
+        this.jwService = jwService;
     }
     async create(createUserDto) {
         try {
@@ -51,8 +53,8 @@ let AuthService = class AuthService {
         }
         const { password: _, ...rest } = user.toJSON();
         return {
-            ...rest,
-            token: 'ABC-123'
+            user: rest,
+            token: this.getJwtToken({ id: user.id }),
         };
     }
     findAll() {
@@ -67,11 +69,16 @@ let AuthService = class AuthService {
     remove(id) {
         return `This action removes a #${id} auth`;
     }
+    getJwtToken(payload) {
+        const token = this.jwService.sign(payload);
+        return token;
+    }
 };
 exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_2.InjectModel)(user_entity_1.User.name)),
-    __metadata("design:paramtypes", [mongoose_1.Model])
+    __metadata("design:paramtypes", [mongoose_1.Model,
+        jwt_1.JwtService])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map

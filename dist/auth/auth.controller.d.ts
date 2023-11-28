@@ -32,12 +32,14 @@ export declare class AuthController {
     constructor(authService: AuthService);
     create(createUserDto: CreateUserDto): Promise<import("./entities/user.entity").User>;
     login(loginDto: LoginDto): Promise<{
+        user: {
+            email: string;
+            name: string;
+            isActive: boolean;
+            roles: string[];
+            _id: import("mongoose").Types.ObjectId;
+        };
         token: string;
-        email: string;
-        name: string;
-        isActive: boolean;
-        roles: string[];
-        _id: import("mongoose").Types.ObjectId;
     }>;
     findAll(): string;
     findOne(id: string): string;
