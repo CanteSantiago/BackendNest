@@ -17,14 +17,21 @@ const common_1 = require("@nestjs/common");
 const mongoose_1 = require("mongoose");
 const user_entity_1 = require("./entities/user.entity");
 const mongoose_2 = require("@nestjs/mongoose");
+const bcryptjs = require("bcryptjs");
 let AuthService = class AuthService {
     constructor(userModel) {
         this.userModel = userModel;
     }
-    create(createUserDto) {
+    async create(createUserDto) {
         try {
-            const newUser = new this.userModel(createUserDto);
-            return newUser.save();
+            const { password, ...userData } = createUserDto;
+            const newUser = new this.userModel({
+                password: bcryptjs.hashSync(password, 10),
+                ...userData
+            });
+            await newUser.save();
+            const { password: _, ...user } = newUser.toJSON();
+            return user;
         }
         catch (error) {
             if (error.code === 11000) {
